@@ -17,6 +17,7 @@ namespace BFSEdgeListCSharp
     class Program
     {
         static List<List<Vertex>> _edgeList = new List<List<Vertex>>();
+
         static void Main(string[] args)
         {
             Input();
@@ -96,18 +97,20 @@ namespace BFSEdgeListCSharp
                     for (int i = 0; i < 2; i++)
                     {
                         if (edge[i].Index == curVertex.Index)
-                            edge[i].IsDiscovered = true;
-                        int incident = i == 0 ? 1 : 0;
-                        if (edge[i].Index == curVertex.Index && !edge[incident].IsDiscovered)
                         {
-                            edge[incident].IsDiscovered = true;
-                            edge[incident].Distance = curVertex.Distance + 1;
-                            queue.Enqueue(edge[incident]);
-                            vertices.Add(edge[incident]);
-                            foreach (var edge2 in _edgeList)
-                                for (int j = 0; j < 2; j++)
-                                    if (edge2[j].Index == edge[incident].Index)
-                                        edge2[j].IsDiscovered = true;
+                            edge[i].IsDiscovered = true;
+                            int incident = i == 0 ? 1 : 0; // инцидентная вершина
+                            if (!edge[incident].IsDiscovered)
+                            {
+                                edge[incident].IsDiscovered = true;
+                                edge[incident].Distance = curVertex.Distance + 1;
+                                queue.Enqueue(edge[incident]);
+                                vertices.Add(edge[incident]);
+                                foreach (var e in _edgeList) 
+                                    for (int j = 0; j < 2; j++)
+                                        if (e[j].Index == edge[incident].Index)
+                                            e[j].IsDiscovered = true;
+                            }
                         }
                     }
             }
