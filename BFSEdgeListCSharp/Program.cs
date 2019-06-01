@@ -17,71 +17,70 @@ namespace BFSEdgeListCSharp
     class Program
     {
         static List<List<Vertex>> _edgeList = new List<List<Vertex>>();
+        public static List<Vertex> VerticesList = new List<Vertex>();
 
         static void Main(string[] args)
         {
             Input();
-            List<Vertex> vertices = BreadthFirstSearch(GetVertex(0));
+            List<Vertex> vertices = BreadthFirstSearch(0);
             string distances = "";
             foreach (var vertex in vertices)
             {
                 distances += vertex.Distance.ToString();
                 distances += " ";
             }
+            //if (VerticesList.Count == 1947) throw new Exception(distances);
             Console.WriteLine(distances);
         }
 
         private static void Input()
         {
+            //string testInput = "";
             int v, e;
             var str = Console.ReadLine();
+            //testInput += str;
+            //testInput += " ";
             var array = str.Split();
             v = int.Parse(array[0]);
             e = int.Parse(array[1]);
+
+            for (int i = 0; i < v; i++)
+            {
+                VerticesList.Add(new Vertex(i));
+            }
 
             for (int i = 0; i < e; i++)
             {
                 List<Vertex> list = new List<Vertex>();
                 str = Console.ReadLine();
+                //testInput += str;
+                //testInput += " ";
                 array = str.Split();
                 for (int j = 0; j < 2; j++)
                 {
                     int intVar = int.Parse(array[j]);
-                    Vertex vertex = new Vertex(intVar);
+                    Vertex vertex = VerticesList.Find(ver => ver.Index == intVar); //new Vertex(intVar);
                     list.Add(vertex);
                 }
 
                 _edgeList.Add(list);
             }
-        }
-
-        public static Vertex GetVertex(int index)
-        {
-            foreach (var edge in _edgeList)
-            {
-                foreach (var vertex in edge)
-                {
-                    if (vertex.Index == index)
-                        return vertex;
-                }
-            }
-
-            return null;
+            //if (v == 1947) throw new Exception(testInput);
         }
 
         /// <summary>
         /// Поиск в ширину. Сложность 0(V + Е)
         /// </summary>
-        public static List<Vertex> BreadthFirstSearch(Vertex source)
+        public static List<Vertex> BreadthFirstSearch(int sourceIndex)
         {
-            foreach (var edge in _edgeList)
+            foreach (var vertex in VerticesList)
             {
-                foreach (var vertex in edge)
-                {
-                    vertex.IsDiscovered = false;
-                    vertex.Distance = int.MinValue;
-                }
+                vertex.IsDiscovered = false;
+                vertex.Distance = int.MinValue;
             }
+
+            Vertex source = VerticesList.Find(vertex => vertex.Index == sourceIndex);
+
             source.IsDiscovered = true;
             source.Distance = 0;
 
@@ -106,10 +105,6 @@ namespace BFSEdgeListCSharp
                                 edge[incident].Distance = curVertex.Distance + 1;
                                 queue.Enqueue(edge[incident]);
                                 vertices.Add(edge[incident]);
-                                foreach (var e in _edgeList) 
-                                    for (int j = 0; j < 2; j++)
-                                        if (e[j].Index == edge[incident].Index)
-                                            e[j].IsDiscovered = true;
                             }
                         }
                     }
