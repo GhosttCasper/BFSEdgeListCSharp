@@ -27,9 +27,9 @@ namespace BFSEdgeListCSharp
         public Vertex GetIncident(Vertex curVertex)
         {
             if (FirstVertex.Index == curVertex.Index)
-                return FirstVertex;
-            if (SecondVertex.Index == curVertex.Index)
                 return SecondVertex;
+            if (SecondVertex.Index == curVertex.Index)
+                return FirstVertex;
             return null;
         }
     }

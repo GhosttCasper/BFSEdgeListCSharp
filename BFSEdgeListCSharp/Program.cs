@@ -46,8 +46,9 @@ namespace BFSEdgeListCSharp
             e = int.Parse(array[1]);
             _numberVerticies = v;
 
-            _edgeList = new List<Edge>(e);
             VerticesList = new List<Vertex>(v);
+            _edgeList = new List<Edge>(e);
+
             for (int i = 0; i < v; i++)
             {
                 VerticesList.Add(new Vertex(i));
@@ -81,7 +82,7 @@ namespace BFSEdgeListCSharp
             {
                 Vertex curVertex = queue.Dequeue();
                 curVertex.IsDiscovered = true;
-                foreach (var edge in _edgeList)
+                foreach (var edge in _edgeList) //foreach (var edge in _edgeList.Where(e => e.HasVertex(curVertex)))
                 {
                     if (edge.HasVertex(curVertex))
                     {
