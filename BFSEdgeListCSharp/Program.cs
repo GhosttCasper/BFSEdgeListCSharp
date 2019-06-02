@@ -54,13 +54,12 @@ namespace BFSEdgeListCSharp
                 List<Vertex> list = new List<Vertex>();
                 str = Console.ReadLine();
                 //testInput += str;
-                //testInput += " ";
+                //testInput += "/n";
                 array = str.Split();
                 for (int j = 0; j < 2; j++)
                 {
                     int intVar = int.Parse(array[j]);
-                    Vertex vertex = VerticesList.Find(ver => ver.Index == intVar); //new Vertex(intVar);
-                    list.Add(vertex);
+                    list.Add(VerticesList[intVar]);
                 }
 
                 _edgeList.Add(list);
@@ -79,7 +78,7 @@ namespace BFSEdgeListCSharp
                 vertex.Distance = int.MinValue;
             }
 
-            Vertex source = VerticesList.Find(vertex => vertex.Index == sourceIndex);
+            Vertex source = VerticesList[sourceIndex]; 
 
             source.IsDiscovered = true;
             source.Distance = 0;
