@@ -16,14 +16,19 @@ namespace BFSEdgeListCSharp
 {
     class Program
     {
-        static List<Edge> _edgeList = new List<Edge>();
-        public static List<Vertex> VerticesList = new List<Vertex>();
+        static List<Edge> _edgeList;
+        public static List<Vertex> VerticesList;
         private static int _numberVerticies;
 
         static void Main(string[] args)
         {
             Input();
             BreadthFirstSearch(0);
+            Output();
+        }
+
+        private static void Output()
+        {
             StringBuilder sb = new StringBuilder("", _numberVerticies * 5);
             foreach (var vertex in VerticesList)
             {
@@ -41,6 +46,8 @@ namespace BFSEdgeListCSharp
             e = int.Parse(array[1]);
             _numberVerticies = v;
 
+            _edgeList = new List<Edge>(e);
+            VerticesList = new List<Vertex>(v);
             for (int i = 0; i < v; i++)
             {
                 VerticesList.Add(new Vertex(i));
@@ -63,12 +70,6 @@ namespace BFSEdgeListCSharp
         /// </summary>
         public static void BreadthFirstSearch(int sourceIndex)
         {
-            foreach (var vertex in VerticesList)
-            {
-                vertex.IsDiscovered = false;
-                vertex.Distance = int.MinValue;
-            }
-
             Vertex source = VerticesList[sourceIndex];
 
             source.IsDiscovered = true;
@@ -79,26 +80,17 @@ namespace BFSEdgeListCSharp
             while (queue.Count > 0)
             {
                 Vertex curVertex = queue.Dequeue();
+                curVertex.IsDiscovered = true;
                 foreach (var edge in _edgeList)
                 {
-                    if (edge.IncidentFrom.Index == curVertex.Index || edge.IncidentTo.Index == curVertex.Index)
+                    if (edge.HasVertex(curVertex))
                     {
-                        if (edge.IncidentFrom.Index == curVertex.Index && !edge.IncidentTo.IsDiscovered)
+                        var incident = edge.GetIncident(curVertex);
+                        if (!incident.IsDiscovered)
                         {
-                            edge.IncidentFrom.IsDiscovered = true;
-                            edge.IncidentTo.IsDiscovered = true;
-                            edge.IncidentTo.Distance = curVertex.Distance + 1;
-                            queue.Enqueue(edge.IncidentTo);
-                        }
-                        else
-                        {
-                            if (edge.IncidentTo.Index == curVertex.Index && !edge.IncidentFrom.IsDiscovered)
-                            {
-                                edge.IncidentTo.IsDiscovered = true;
-                                edge.IncidentFrom.IsDiscovered = true;
-                                edge.IncidentFrom.Distance = curVertex.Distance + 1;
-                                queue.Enqueue(edge.IncidentFrom);
-                            }
+                            incident.IsDiscovered = true;
+                            incident.Distance = curVertex.Distance + 1;
+                            queue.Enqueue(incident);
                         }
                     }
                 }

@@ -15,6 +15,7 @@ namespace BFSEdgeListCSharp
         public Vertex(int index)
         {
             Index = index;
+            Distance = int.MinValue;
         }
     }
 }

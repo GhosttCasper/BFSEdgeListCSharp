@@ -8,13 +8,29 @@ namespace BFSEdgeListCSharp
 {
     public class Edge
     {
-        public Vertex IncidentFrom; // выходит (начало)
-        public Vertex IncidentTo; // входит (конец)
+        public Vertex FirstVertex; // выходит (начало)
+        public Vertex SecondVertex; // входит (конец)
 
-        public Edge(Vertex incidentFrom, Vertex incidentTo)
+        public Edge(Vertex firstVertex, Vertex secondVertex)
         {
-            IncidentFrom = incidentFrom;
-            IncidentTo = incidentTo;
+            FirstVertex = firstVertex;
+            SecondVertex = secondVertex;
+        }
+
+        public bool HasVertex(Vertex curVertex)
+        {
+            if (FirstVertex.Index == curVertex.Index || SecondVertex.Index == curVertex.Index)
+                return true;
+            return false;
+        }
+
+        public Vertex GetIncident(Vertex curVertex)
+        {
+            if (FirstVertex.Index == curVertex.Index)
+                return FirstVertex;
+            if (SecondVertex.Index == curVertex.Index)
+                return SecondVertex;
+            return null;
         }
     }
 }
