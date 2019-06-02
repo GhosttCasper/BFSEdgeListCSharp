@@ -16,7 +16,7 @@ namespace BFSEdgeListCSharp
 {
     class Program
     {
-        static List<Edge> _edgeList;
+        public static List<List<Vertex>> AdjacencyList;
         public static List<Vertex> VerticesList;
         private static int _numberVerticies;
 
@@ -47,11 +47,16 @@ namespace BFSEdgeListCSharp
             _numberVerticies = v;
 
             VerticesList = new List<Vertex>(v);
-            _edgeList = new List<Edge>(e);
+            AdjacencyList = new List<List<Vertex>>(v);
 
             for (int i = 0; i < v; i++)
             {
                 VerticesList.Add(new Vertex(i));
+            }
+
+            for (int i = 0; i < v; i++)
+            {
+                AdjacencyList.Add(new List<Vertex>());
             }
 
             for (int i = 0; i < e; i++)
@@ -61,8 +66,8 @@ namespace BFSEdgeListCSharp
                 int firstIndex = int.Parse(array[0]);
                 int secondIndex = int.Parse(array[1]);
 
-                Edge edge = new Edge(VerticesList[firstIndex], VerticesList[secondIndex]);
-                _edgeList.Add(edge);
+                AdjacencyList[firstIndex].Add(VerticesList[secondIndex]);
+                AdjacencyList[secondIndex].Add(VerticesList[firstIndex]);
             }
         }
 
@@ -81,17 +86,13 @@ namespace BFSEdgeListCSharp
             while (queue.Count > 0)
             {
                 Vertex curVertex = queue.Dequeue();
-                foreach (var edge in _edgeList) //foreach (var edge in _edgeList.Where(e => e.HasVertex(curVertex)))
+                foreach (var vertex in AdjacencyList[curVertex.Index])
                 {
-                    if (edge.HasVertex(curVertex))
+                    if (vertex.IsDiscovered == false)
                     {
-                        var incident = edge.GetIncident(curVertex);
-                        if (!incident.IsDiscovered)
-                        {
-                            incident.IsDiscovered = true;
-                            incident.Distance = curVertex.Distance + 1;
-                            queue.Enqueue(incident);
-                        }
+                        vertex.IsDiscovered = true;
+                        vertex.Distance = curVertex.Distance + 1;
+                        queue.Enqueue(vertex);
                     }
                 }
             }
