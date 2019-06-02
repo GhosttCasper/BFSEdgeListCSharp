@@ -81,7 +81,6 @@ namespace BFSEdgeListCSharp
             while (queue.Count > 0)
             {
                 Vertex curVertex = queue.Dequeue();
-                curVertex.IsDiscovered = true;
                 foreach (var edge in _edgeList) //foreach (var edge in _edgeList.Where(e => e.HasVertex(curVertex)))
                 {
                     if (edge.HasVertex(curVertex))
